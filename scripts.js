@@ -10,19 +10,21 @@ let numToWin;
 let moves;
 
 //Creates the Grid, and starts the game
-function MatchGrid(widthActivity, heightActivity, numOfMatches, timeLimit, theme){
+function MatchGrid(widthActivity, heightActivity, columns, rows, timeLimit, theme){
     clearGame()
     //Creates New Game
     createActivityArea(widthActivity, heightActivity)
-    createCard(numOfMatches);
-    numToWin = numOfMatches;
-    shuffle(numOfMatches);
+    numToWin = ((columns * rows)/2);
+    createCard(numToWin,columns, rows, widthActivity, heightActivity);
+    shuffle(numToWin);
     cards.forEach(card => card.addEventListener('click', flipCard));
     timer(timeLimit)
 }
 
 //Clears Old Game by removing elements and resetting variables
 function clearGame(){
+    var timebox = document.getElementsByClassName("time-box");
+    timebox[0].style.background = "#3ff266";
     var parent1 = document.getElementById('memory-game');
     var status = document.getElementById('status');
     parent1.innerHTML = "";
@@ -64,8 +66,11 @@ function timer(time){
         --timer;
         //Game lost
         if (timer < 0) {
+            var x = document.getElementsByClassName("time-box");
+            x[0].style.background = "#F2403F";
             gameStatus("lose")
             disableGame();
+            on();
             clearInterval(interval);
         }
     }
@@ -82,21 +87,24 @@ function gameStatus(status){
 }
 
 //Creates Each Card
-function createCard(numOfMatches) {
+function createCard(numToWin, columns, rows, width, height) {
     var i = 0;
     //Creates amount of cards equal to how many matches user wants to play
-    while (i < numOfMatches){
+    while (i < numToWin){
     //Creates the Card
     var newCard = document.createElement("div"); 
     newCard.className = "memory-card";
     newCard.dataset.value = i;
+    newCard.style.fontSize = `3rem`;
+    newCard.style.width = `calc(calc(100% / ${rows}) - 10px)`;
+    console.log(newCard.style.width)
+    newCard.style.height = `calc(100% / ${columns})vh`;
     //Front of Card
     var newFrontContent = document.createElement("div"); 
     newFrontContent.innerText = `${i}`;
     newFrontContent.className = "front-face";
     //Back of Card
     var newBackContent = document.createElement("div"); 
-    newBackContent.innerText = `Back`;
     newBackContent.className = "back-face";
     //Appends faces to Card and and creates clone of Card
     newCard.appendChild(newFrontContent);
@@ -155,6 +163,7 @@ function disableGame() {
 function checkForWin() {
  if (score === numToWin){
      gameStatus("win")
+     on();
      clearInterval(interval)
  }
 }
@@ -167,7 +176,7 @@ function unFlipCards() {
         secondCard.classList.remove('flip')
 
         resetBoard();
-    }, 1300);
+    }, 800);
 };
 
 //Cleans up after each card flip
@@ -184,7 +193,15 @@ function shuffle(num) {
     });
 };
 
+function on() {
+    document.getElementById("overlay").style.display = "block";
+  }
+  
+  function off() {
+    document.getElementById("overlay").style.display = "none";
+  }
+
 //Starts the game with the matchgrid object
 function startGame(){
-    new MatchGrid( "80vw", "80vh", 4, 10, "red")
+    new MatchGrid( "800px", "800px", 4, 8, 5, "red")
 }

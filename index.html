@@ -10,10 +10,14 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+    <div id="overlay" onclick="off()">
+      <div id="status"> </div>
+    </div>
+
     <h1>Memory Game</h1>
-    <div>Time: <span id="time"></span></div>
+    <div class="time-box">Time Remaining: <span id="time">00:00</span></div>
     <button onclick="startGame()">Start Game</button>
-    <div id="status"> </div>
+
     <section id = "memory-game" class="memory-game" onmouseover="unpausefunc()" onmouseout="pausefunc()">
     </section>
 

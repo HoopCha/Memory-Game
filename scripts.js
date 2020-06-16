@@ -264,6 +264,13 @@ function setGame(){
 function startGame(){
     var valid = setGame()
     if (valid){
-    new MatchGrid( input.width, input.height, input.columns, input.rows, input.timeLimit, input.theme)
+        var elem = document.getElementById("alert");
+        elem.innerHTML = `Welcome to the memory game. Change to desired settings and press start to play.`
+        elem.style.color = "black";
+        new MatchGrid( input.width, input.height, input.columns, input.rows, input.timeLimit, input.theme)
+    }
+    else {
+        clearInterval(interval)
+        disableGame()
     }
 }

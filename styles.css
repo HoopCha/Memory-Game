@@ -121,6 +121,7 @@
     background: #3ab77c;
     backface-visibility: hidden;
     text-align: center;
+    color:black;
   }
   
   .front-face {

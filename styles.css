@@ -127,6 +127,7 @@
   .front-face {
     transform: rotateY(-180deg);
     background: red;
+    backface-visibility: visible;
   }
 
   #alert {

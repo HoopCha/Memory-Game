@@ -1,65 +1,84 @@
 //Variables
 var cards;
-let hasFlippedCard = false;
-let lockBoard = false;
+let boardLock = false;
 let firstCard;
 let secondCard;
 let pause = false;
 let interval;
 let score=0;
 let numToWin;
+let moves;
 
 //Creates the Grid, and starts the game
 function MatchGrid(widthActivity, heightActivity, numOfMatches, timeLimit, theme){
-    //Clears Old Game
-    var parent1 = document.getElementById('memory-game');
-    parent1.innerHTML = "";
-    score = 0;
+    clearGame()
     //Creates New Game
     createActivityArea(widthActivity, heightActivity)
     createCard(numOfMatches);
     numToWin = numOfMatches;
-    shuffle();
+    shuffle(numOfMatches);
     cards.forEach(card => card.addEventListener('click', flipCard));
     timer(timeLimit)
 }
 
+//Clears Old Game by removing elements and resetting variables
+function clearGame(){
+    var parent1 = document.getElementById('memory-game');
+    var status = document.getElementById('status');
+    parent1.innerHTML = "";
+    status.innerHTML = "";
+    [score, moves] = [0,0];
+}
+
+//Creates the activity area ***Needs Work***
 function createActivityArea(width, height){
     document.getElementById("memory-game").style.width = width;
     document.getElementById("memory-game").style.height = height;
 }
 
+//On Mouse out, pause the game timer
 function pausefunc() {
-    //console.log("Paused")
     pause = true;
 }
 
+//On Mouse enter, resume the timer
 function unpausefunc() {
-    //console.log("unpaused")
     pause = false;
 }
 
+//Creates a timer in minutes and seconds based on the time imput in seconds
 function timer(time){
     var display = document.querySelector('#time');
     var timer = time;
+    //Prevents the spamming of Start game
     clearInterval(interval)
-
     interval = setInterval(function() {
         minutes = parseInt(timer / 60, 10)
         seconds = parseInt(timer % 60, 10);
-
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
         display.textContent = minutes + ":" + seconds;
+        //Checks pause status every second
         if (!pause){
-        --timer;    
+        --timer;
+        //Game lost
         if (timer < 0) {
-            console.log("lose")
+            gameStatus("lose")
+            disableGame();
             clearInterval(interval);
         }
     }
     }, 1000);
+}
+
+//Displays element to screen based on status of the game
+function gameStatus(status){
+    var display = document.querySelector('#status');
+    if(status === "win"){
+    display.textContent = `You won in ${moves} moves!`;
+    } else if (status === "lose")
+    display.textContent = "You Lose!";
 }
 
 //Creates Each Card
@@ -73,7 +92,7 @@ function createCard(numOfMatches) {
     newCard.dataset.value = i;
     //Front of Card
     var newFrontContent = document.createElement("div"); 
-    newFrontContent.innerText = `Front ${i}`;
+    newFrontContent.innerText = `${i}`;
     newFrontContent.className = "front-face";
     //Back of Card
     var newBackContent = document.createElement("div"); 
@@ -92,29 +111,31 @@ function createCard(numOfMatches) {
 };
 
 function flipCard() {
-    if(lockBoard) return;
+    //Prevents spamming of too many cards
+    if(boardLock) return;
+    //Prevents clicking on the same card twice
     if (this === firstCard) return;
 
-  this.classList.add('flip');
+    this.classList.add('flip');
 
-  if (!hasFlippedCard) {
-    hasFlippedCard = true;
-    firstCard=this;
-    console.log(firstCard)
-    return;
-  }
-    secondCard = this;
-    console.log(secondCard)
-    checkForMatch();
+    //Sets the first card if not already declared
+    if (!firstCard) {
+        firstCard=this;
+        return;
+    }
+    //Sets the 2nd card and checks for match between the two
+        secondCard = this;
+        checkForMatch();
 };
 
-
+//Checks the value of each card for a match, adds move to counter
 function checkForMatch() {
-    console.log(firstCard.dataset.value, secondCard.dataset.value)
+    ++moves;
     let isMatch = firstCard.dataset.value === secondCard.dataset.value;
     isMatch ? disableCards() : unFlipCards();
 };
 
+//Makes a matched pair no longer flippable, also checks for win based on score
 function disableCards() {
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
@@ -123,17 +144,24 @@ function disableCards() {
     resetBoard();
 };
 
+//Disables the game after time runs out, so player can not continue to play
+function disableGame() {
+    cards.forEach(card => {
+        card.removeEventListener('click', flipCard);
+    });
+    resetBoard();
+};
+
 function checkForWin() {
  if (score === numToWin){
-     console.log("You Win")
+     gameStatus("win")
      clearInterval(interval)
  }
 }
 
+//Unflips the cards after timeout
 function unFlipCards() {
-
-    lockBoard = true;
-
+    boardLock = true;
     setTimeout(() => {
         firstCard.classList.remove('flip')
         secondCard.classList.remove('flip')
@@ -142,18 +170,21 @@ function unFlipCards() {
     }, 1300);
 };
 
+//Cleans up after each card flip
 function resetBoard() {
-    [hasFlippedCard, lockBoard] = [false, false];
+    boardLock =  false;
     [firstCard, secondCard] = [null, null];
 };
 
-function shuffle() {
+//Shuffles the cards based on order for flex
+function shuffle(num) {
     cards.forEach(card => {
-        let randomPos = Math.floor(Math.random() * 12);
-        card.style.order = randomPos;
+        let randomNum = Math.floor(Math.random() * (num*2));
+        card.style.order = randomNum;
     });
 };
 
+//Starts the game with the matchgrid object
 function startGame(){
-    new MatchGrid( "80vh", "80vw", 2, 10, "red")
+    new MatchGrid( "80vw", "80vh", 4, 10, "red")
 }

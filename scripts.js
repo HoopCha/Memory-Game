@@ -24,6 +24,7 @@ function MatchGrid(widthActivity, heightActivity, columns, rows, timeLimit, them
     timer(timeLimit)
 }
 
+
 function setTheme(theme){
     var colorCards = document.querySelectorAll('.front-face, .back-face');
     colorCards.forEach( card => {
@@ -34,13 +35,13 @@ function setTheme(theme){
         }
         })
 }
-
 //Clears Old Game by removing elements and resetting variables
 function clearGame(){
     var timebox = document.getElementsByClassName("time-box");
     timebox[0].style.background = "#3ff266";
     var parent1 = document.getElementById('memory-game');
     var status = document.getElementById('status');
+
     parent1.innerHTML = "";
     status.innerHTML = "";
     [score, moves] = [0,0];
@@ -84,6 +85,7 @@ function timer(time){
             x[0].style.background = "#F2403F";
             gameStatus("lose")
             disableGame();
+            clearInterval(interval);
             on();
             clearInterval(interval);
         }
@@ -216,6 +218,15 @@ function shuffle(num) {
 
 function on() {
     document.getElementById("overlay").style.display = "block";
+    anime({
+        targets: '#status',
+        scale: [
+          { value: 1.1, duration: 1000 },
+          { value: .9, duration: 1000 },
+        ],
+        autoplay:true,
+        loop:false
+    });
   }
   
   function off() {

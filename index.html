@@ -4,7 +4,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <title>Number Memory Game</title>
 
   <link rel="stylesheet" href="./styles.css">
@@ -30,7 +29,7 @@
         <input id="rows" value="4">
       </div>
       <div class ="setting-div">Time:
-        <input id="timeLimit" value="30">
+        <input id="timeLimit" value="1">
       </div>
       <div class ="setting-div">Theme:
         <select id="theme">
@@ -47,7 +46,8 @@
     </div>
     <section id = "memory-game" class="memory-game" onmouseover="unpausefunc()" onmouseout="pausefunc()">
     </section>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
   <script src="./scripts.js"></script>
+
 </body>
 </html>

@@ -145,13 +145,11 @@
   }
   
   #status{
-    position: absolute;
+    position: sticky;
     top: 50%;
     left: 50%;
     font-size: 6rem;
     color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
     font-weight: bold;
     text-shadow: 2px 2px #000000;
     text-align: center;

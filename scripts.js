@@ -30,8 +30,8 @@ function setTheme(theme){
     colorCards.forEach( card => {
         if (theme === "red"){
             card.style.backgroundColor = `#d32c2c`
-        } else if  (theme === "yellow"){
-            card.style.backgroundColor = `#eaff2c`
+        } else if  (theme === "blue"){
+            card.style.backgroundColor = `##6195c7`
         }
         })
 }

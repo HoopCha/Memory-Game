@@ -106,6 +106,9 @@
   
   .memory-card.flip {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
   }
   
   .front-face,
@@ -146,12 +149,14 @@
   }
   
   #status{
-    position: sticky;
-    top: 50%;
-    left: 50%;
+    position: static;
+    margin-top: 25%;
+
     font-size: 6rem;
     color: white;
     font-weight: bold;
     text-shadow: 2px 2px #000000;
     text-align: center;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
   }

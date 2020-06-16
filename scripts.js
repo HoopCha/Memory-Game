@@ -111,15 +111,15 @@ function createCard(numToWin, columns, rows, width, height) {
     newCard.dataset.value = i;
     //Uses the most appropriate font size
     // --------------------------
-    var x = (100/parseInt(rows, 10))
-    var y = (100/parseInt(columns, 10))
+    var x = (100/parseInt(rows, 10)*2)
+    var y = (100/parseInt(columns, 10)*2)
     if (x > y) {
     newCard.style.fontSize = `${x}px`;
     } else {
     newCard.style.fontSize = `${y}px`;  
     }
     //------------------------
-    newCard.style.width = `calc(calc(100% / ${rows}) - 10px)`;
+    newCard.style.width = `calc(calc(100% / ${columns}) - 10px)`;
     //Front of Card
     var newFrontContent = document.createElement("div"); 
     newFrontContent.innerText = `${i}`;
@@ -233,12 +233,13 @@ function setGame(){
     timeLimit = document.getElementById("timeLimit").value;
     theme = document.getElementById("theme").value;
     
-    if ((columns * rows)% 2 != 0){
-        alert = "Row times Column must be divisible by two. "
+    //Form validation
+    if ((columns * rows)% 2 != 0 || columns <= 0 || rows <= 0){
+        alert = "Row times column must be divisible by two and be positive. "
         trigger = true
     }
-    if (timeLimit <= 0 || isNaN(timeLimit)){
-        alert += "Time must be greater than 0 and a number"
+    if (timeLimit <= 0 || isNaN(timeLimit) || timeLimit >= 3601){
+        alert += "Time must be between  1s and 1h and a number"
         trigger = true;
     }
     if (trigger === true){
@@ -247,7 +248,6 @@ function setGame(){
         elem.style.color = "red";
         return false;
     }
-
 
     input = {
         width: width,

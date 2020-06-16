@@ -31,7 +31,7 @@ function setTheme(theme){
         if (theme === "red"){
             card.style.backgroundColor = `#d32c2c`
         } else if  (theme === "blue"){
-            card.style.backgroundColor = `##6195c7`
+            card.style.backgroundColor = `#6195c7`
         }
         })
 }

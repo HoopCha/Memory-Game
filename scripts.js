@@ -103,39 +103,39 @@ function gameStatus(status){
 }
 
 //Creates Each Card
-function createCard(numToWin, columns, rows, width, height) {
+function createCard(numToWin, columns, rows) {
     var i = 0;
     //Creates amount of cards equal to how many matches user wants to play
     while (i < numToWin){
-    //Creates the Card
-    var newCard = document.createElement("div"); 
-    newCard.className = "memory-card";
-    newCard.dataset.value = i;
-    //Uses the most appropriate font size
-    // --------------------------
-    var x = (100/parseInt(rows, 10)*2)
-    var y = (100/parseInt(columns, 10)*2)
-    if (x > y) {
-    newCard.style.fontSize = `${x}px`;
-    } else {
-    newCard.style.fontSize = `${y}px`;  
-    }
-    //------------------------
-    newCard.style.width = `calc(calc(100% / ${columns}) - 10px)`;
-    //Front of Card
-    var newFrontContent = document.createElement("div"); 
-    newFrontContent.innerText = `${i}`;
-    newFrontContent.className = "front-face";
-    //Back of Card
-    var newBackContent = document.createElement("div"); 
-    newBackContent.className = "back-face";
-    //Appends faces to Card and and creates clone of Card
-    newCard.appendChild(newFrontContent);
-    newCard.appendChild(newBackContent);
-    let match = newCard.cloneNode(true);
-    document.getElementById("memory-game").appendChild(newCard);
-    document.getElementById("memory-game").appendChild(match);
-    i++;
+        //Creates the Card
+        var newCard = document.createElement("div"); 
+        newCard.className = "memory-card";
+        newCard.dataset.value = i;
+        //Uses the most appropriate font size
+        // --------------------------
+        var x = (100/parseInt(rows, 10)*2)
+        var y = (100/parseInt(columns, 10)*2)
+        if (x > y) {
+        newCard.style.fontSize = `${x}px`;
+        } else {
+        newCard.style.fontSize = `${y}px`;  
+        }
+        //------------------------
+        newCard.style.width = `calc(calc(100% / ${columns}) - 10px)`;
+        //Front of Card
+        var newFrontContent = document.createElement("div"); 
+        newFrontContent.innerText = `${i}`;
+        newFrontContent.className = "front-face";
+        //Back of Card
+        var newBackContent = document.createElement("div"); 
+        newBackContent.className = "back-face";
+        //Appends faces to Card and and creates clone of Card
+        newCard.appendChild(newFrontContent);
+        newCard.appendChild(newBackContent);
+        let match = newCard.cloneNode(true);
+        document.getElementById("memory-game").appendChild(newCard);
+        document.getElementById("memory-game").appendChild(match);
+        i++;
     }
     //Sets created cards to variable to be used. 
     cards = document.querySelectorAll('.memory-card');
@@ -229,9 +229,9 @@ function on() {
     });
   }
   
-  function off() {
+function off() {
     document.getElementById("overlay").style.display = "none";
-  }
+}
 
 function setGame(){
     var width, height, columns, rows, timeLimit, theme;

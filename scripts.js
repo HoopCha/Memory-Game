@@ -9,6 +9,8 @@ let score=0;
 let numToWin;
 let moves;
 
+let input = {}
+
 //Creates the Grid, and starts the game
 function MatchGrid(widthActivity, heightActivity, columns, rows, timeLimit, theme){
     clearGame()
@@ -16,9 +18,21 @@ function MatchGrid(widthActivity, heightActivity, columns, rows, timeLimit, them
     createActivityArea(widthActivity, heightActivity)
     numToWin = ((columns * rows)/2);
     createCard(numToWin,columns, rows, widthActivity, heightActivity);
+    setTheme(theme);
     shuffle(numToWin);
     cards.forEach(card => card.addEventListener('click', flipCard));
     timer(timeLimit)
+}
+
+function setTheme(theme){
+    var colorCards = document.querySelectorAll('.front-face, .back-face');
+    colorCards.forEach( card => {
+        if (theme === "red"){
+            card.style.backgroundColor = `#d32c2c`
+        } else if  (theme === "yellow"){
+            card.style.backgroundColor = `#eaff2c`
+        }
+        })
 }
 
 //Clears Old Game by removing elements and resetting variables
@@ -95,10 +109,17 @@ function createCard(numToWin, columns, rows, width, height) {
     var newCard = document.createElement("div"); 
     newCard.className = "memory-card";
     newCard.dataset.value = i;
-    newCard.style.fontSize = `3rem`;
+    //Uses the most appropriate font size
+    // --------------------------
+    var x = (100/parseInt(rows, 10))
+    var y = (100/parseInt(columns, 10))
+    if (x > y) {
+    newCard.style.fontSize = `${x}px`;
+    } else {
+    newCard.style.fontSize = `${y}px`;  
+    }
+    //------------------------
     newCard.style.width = `calc(calc(100% / ${rows}) - 10px)`;
-    console.log(newCard.style.width)
-    newCard.style.height = `calc(100% / ${columns})vh`;
     //Front of Card
     var newFrontContent = document.createElement("div"); 
     newFrontContent.innerText = `${i}`;
@@ -201,7 +222,48 @@ function on() {
     document.getElementById("overlay").style.display = "none";
   }
 
+function setGame(){
+    var width, height, columns, rows, timeLimit, theme;
+    var alert ="";
+    var trigger = false;
+    width = document.getElementById("width").value;
+    height = document.getElementById("height").value;
+    columns = document.getElementById("columns").value;
+    rows = document.getElementById("rows").value;
+    timeLimit = document.getElementById("timeLimit").value;
+    theme = document.getElementById("theme").value;
+    
+    if ((columns * rows)% 2 != 0){
+        alert = "Row times Column must be divisible by two. "
+        trigger = true
+    }
+    if (timeLimit <= 0 || isNaN(timeLimit)){
+        alert += "Time must be greater than 0 and a number"
+        trigger = true;
+    }
+    if (trigger === true){
+        var elem = document.getElementById("alert");
+        elem.innerHTML = `${alert}`
+        elem.style.color = "red";
+        return false;
+    }
+
+
+    input = {
+        width: width,
+        height: height,
+        columns: columns,
+        rows: rows,
+        timeLimit: timeLimit,
+        theme: theme
+    }
+    return true
+}
+
 //Starts the game with the matchgrid object
 function startGame(){
-    new MatchGrid( "800px", "800px", 4, 8, 5, "red")
+    var valid = setGame()
+    if (valid){
+    new MatchGrid( input.width, input.height, input.columns, input.rows, input.timeLimit, input.theme)
+    }
 }

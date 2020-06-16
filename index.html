@@ -15,9 +15,36 @@
     </div>
 
     <h1>Memory Game</h1>
-    <div class="time-box">Time Remaining: <span id="time">00:00</span></div>
+    <h3>Game Settings</h3>
+    <div class="settings">
+    <div class ="setting-div">Width:
+    <input id="width" value="80vw">
+    </div>
+    <div class ="setting-div">Height:
+    <input id="height" value="80vw">
+  </div>
+    <div class ="setting-div">Columns:
+    <input id="columns" value="4">
+  </div>
+    <div class ="setting-div">Rows:
+    <input id="rows" value="4">
+  </div>
+    <div class ="setting-div">Time:
+    <input id="timeLimit" value="30">
+  </div>
+    <div class ="setting-div">Theme:
+    <select id="theme">
+    <option value ="classic">Classic</option>
+    <option value ="red">Red</option>
+    <option value ="yellow">Yellow</option>
+    </select>
+  </div>
+    </div>
+    <div id = alert>Welcome to the memory game. Change to desired settings and press start to play.</div>
+    <div class = "settings">
+    <div class="time-box">Time Remaining: <span id="time">00:00</span> </div>
     <button onclick="startGame()">Start Game</button>
-
+    </div>
     <section id = "memory-game" class="memory-game" onmouseover="unpausefunc()" onmouseout="pausefunc()">
     </section>
 
